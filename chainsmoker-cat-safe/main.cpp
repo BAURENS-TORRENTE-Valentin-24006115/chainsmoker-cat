@@ -13,7 +13,7 @@ using namespace std;
 
 binary_semaphore peterParker{ 1 };
 // represent the available resources
-binary_semaphore spiderWeb { 0 };
+binary_semaphore spiderWeb{ 0 };
 binary_semaphore suit{ 0 };
 binary_semaphore spiderBot{ 0 };
 
@@ -42,17 +42,17 @@ void peterParkerLogic() {
         randInt = rand() % 3;
 
         if (randInt == 0) {
-            cout << "Peter Parker met à disposition des toiles et des spider-bots" << endl;
+            cout << "Peter Parker met a disposition des toiles et des spider-bots" << endl;
             spiderWeb.release();
             spiderBot.release();
         }
         else if (randInt == 1) {
-            cout << "Peter Parker met à disposition des spider-bots et des tenues." << endl;
+            cout << "Peter Parker met a disposition des spider-bots et des tenues." << endl;
             spiderBot.release();
             suit.release();
         }
         else if (randInt == 2) {
-            cout << "Peter Parker met à disposition des toiles et des tenues." << endl;
+            cout << "Peter Parker met a disposition des toiles et des tenues." << endl;
             spiderWeb.release();
             suit.release();
         }
@@ -188,7 +188,7 @@ void spiderBotLogic() {
     while (true) {
         spiderBotMilles.acquire();
 
-        cout << "Milles Moralles a son spider-bot et recupere ses toiles et sa tenue." << endl;
+        cout << "Miles Morales a son spider-bot et recupere ses toiles et sa tenue." << endl;
         cout << "Il part en mission";
         for (int i = 0; i < 3; ++i)
         {
