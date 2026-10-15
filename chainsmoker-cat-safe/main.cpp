@@ -20,7 +20,7 @@ binary_semaphore spiderWebGwen{ 0 }; // Missing suit and spiderBots
 binary_semaphore suitSpiderPunk{ 0 }; // Missing spiderWeb and spiderBots
 binary_semaphore spiderBotMilles{ 0 }; // Missing suit and spiderWeb
 
-bool is_spiderWeb = false;
+bool is_SpiderWeb = false;
 bool is_Suit = false;
 bool is_SpiderBot = false;
 mutex pusher_mutex;
@@ -68,7 +68,7 @@ void spiderWeb_pusher() {
             suitSpiderPunk.release(); // We have spiderWeb and spiderBot, so we call the smoker with suit
         }
         else {
-            is_spiderWeb = true;
+            is_SpiderWeb = true;
         }
     }
 }
@@ -78,8 +78,8 @@ void suit_pusher() {
         suit.acquire();
 
         lock_guard<mutex> lock(pusher_mutex);
-        if (is_spiderWeb) {
-            is_spiderWeb = false;
+        if (is_SpiderWeb) {
+            is_SpiderWeb = false;
             spiderBotMilles.release(); // We have spiderWeb and suit, so we call the smoker with spiderBot
         }
         else if (is_SpiderBot) {
@@ -101,8 +101,8 @@ void spiderBot_pusher() {
             is_Suit = false;
             spiderWebGwen.release(); // We have spiderBot and suit, so we call the smoker with spiderWeb
         }
-        else if (is_spiderWeb) {
-            is_spiderWeb = false;
+        else if (is_SpiderWeb) {
+            is_SpiderWeb = false;
             suitSpiderPunk.release(); // We have spiderWeb and spiderBot, so we call the smoker with suit
         }
         else {
