@@ -16,10 +16,6 @@ binary_semaphore spiderWeb{ 0 };
 binary_semaphore suit{ 0 };
 binary_semaphore spiderBot{ 0 };
 
-// binary_semaphore tabaccoSmokerSem{ 0 }; // Missing paper and matches
-// binary_semaphore paperSmokerSem{ 0 }; // Missing tabacco and matches
-// binary_semaphore matchSmokerSem{ 0 }; // Missing paper and tabacco
-
 /**
  * @brief Logic for the agent.
  * Function that represents the logic of the agent. The agent will generate a random number (between 0 and 2 included),
