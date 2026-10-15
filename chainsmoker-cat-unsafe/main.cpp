@@ -9,11 +9,12 @@
 
 using namespace std;
 
-binary_semaphore agentSem{ 1 };
-//represent the available ingredients
-binary_semaphore tabacco{ 0 };
-binary_semaphore paper{ 0 };
-binary_semaphore match{ 0 };
+// Peter parker is the agent
+binary_semaphore peterParker{ 1 };
+//represent the available resources
+binary_semaphore spiderWeb{ 0 };
+binary_semaphore suit{ 0 };
+binary_semaphore spiderBot{ 0 };
 
 // binary_semaphore tabaccoSmokerSem{ 0 }; // Missing paper and matches
 // binary_semaphore paperSmokerSem{ 0 }; // Missing tabacco and matches
@@ -26,81 +27,81 @@ binary_semaphore match{ 0 };
  * Depending on the value of randInt, the agent will release the semaphore associated with the disposable ingredients..
  * @return void
  */
-void agentLogic() {
+void peterParkerLogic() {
     int randInt;
     while(true){
-        agentSem.acquire();
+        peterParker.acquire();
 
         randInt = rand() % 3;
 
-        // The agent has : tabacco and matches
+        // The agent has : spider web and spider bot
         if (randInt == 0) {
-            cout << "L'agent mets du tabac et des alumettes sur la table" << endl;
-            tabacco.release();
-            match.release();
+            cout << "Peter Parker met à disposition des toiles et des spider-bots." << endl;
+            spiderWeb.release();
+            spiderBot.release();
         }
-        // The agent has : paper and matches
+        // The agent has : spider bot and a suit
         else if (randInt == 1) {
-            cout << "L'agent mets du papier et des alumettes sur la table" << endl;
-            match.release();
-            paper.release();
+            cout << "Peter Parker met à disposition des spider-bots et des tenues." << endl;
+            spiderBot.release();
+            suit.release();
         }
-        // The agent has : tabacco and paper
+        // The agent has : spider web and a suit
         else if (randInt == 2) {
-            cout << "L'agent mets du tabac et du papier sur la table" << endl;
-            tabacco.release();
-            paper.release();
+            cout << "Peter Parker met à disposition des toiles et des tenues." << endl;
+            spiderWeb.release();
+            suit.release();
         }
     }
 }
 
 /**
- * @brief Logic for the smoker that need paper and tabbaco.
- * Function that represent the logic of the smoker that need matches and paper. The smoker wait that the semaphores for
- * the ingredients are disponible and if they are, print that they are used and that the smoker is smoking.
+ * @brief Logic for one that need a suit and spider web (Gwen).
+ * Function that represent the logic of the one that need a suit and spider web (Gwen). Gwen wait that the semaphores for
+ * the resources are avaible and if they are, print that they are used and that she is going to a mission.
  */
-void tabaccoSmokerLogic() {
+void spiderWebLogic() {
     while (true) {
-        paper.acquire();
-        match.acquire();
+        suit.acquire();
+        spiderBot.acquire();
 
-        cout << "Le fumeur qui a le tabac prend les alumettes et le papier" << endl;
-        cout << "Il fume..." << endl;
-        agentSem.release();
+        cout << "Spider-Gwen a ses toiles et recupere sa tenue et son spider-bot." << endl;
+        cout << "Elle part en mission..." << endl;
+        peterParker.release();
     }
 }
 
 /**
- * @brief Logic for the smoker that need matches and tabacco.
- * Function that represent the logic of the smoker that need matches and tabacco. The smoker wait that the semaphores for
- * the ingredients are disponible and if they are, print that they are used and that the smoker is smoking.
+ * @brief Logic for the one that need spider web and spider bot (Spider-Punk).
+ * Function that represent the logic of the one that need spider web and spider bot (Spider-Punk). Spider-Punk wait that the semaphores for
+ * the resources are avaible and if they are, print that they are used and that he is going to a mission.
  */
-void paperSmokerLogic() {
+void suitLogic() {
     while (true) {
-        tabacco.acquire();
-        match.acquire();
+        spiderWeb.acquire();
+        spiderBot.acquire();
 
-        cout << "Le fumeur qui a le papier prend les alumettes et le tabac" << endl;
-        cout << "Il fume..." << endl;
+        cout << "Spider-Punk a sa tenue et recupere ses toiles et son spider-bot." << endl;
+        cout << "Il part en mission..." << endl;
 
-        agentSem.release();
+        peterParker.release();
     }
 }
 
 /**
- * @brief Logic for the smoker that need tabacco and paper.
- * Function that represent the logic of the smoker that need tabacco and paper. The smoker wait that the semaphores for
- * the ingredients are disponible and if they are, print that they are used and that the smoker is smoking.
+ * @brief Logic for the one that need spider web and a suit (Miller Moralles).
+ * Function that represent the logic of the one that need spider web and a suit (Miller Morales). Milles Moralles wait that the semaphores for
+ * the resources are avaible and if they are, print that they are used and that he is going to a mission.
  */
-void matchSmokerLogic() {
+void spiderBotLogic() {
     while (true) {
-        tabacco.acquire();
-        paper.acquire();
+        spiderWeb.acquire();
+        suit.acquire();
 
-        cout << "Le fumeur qui a les allumettes prend le tabac et le papier" << endl;
-        cout << "Il fume..." << endl;
+        cout << "Milles Moralles a son spider-bot et recupere ses toiles et sa tenue." << endl;
+        cout << "Il part en mission..." << endl;
 
-        agentSem.release();
+        peterParker.release();
     }
 }
 
@@ -109,17 +110,17 @@ int main()
     cout << "--- Debut de la simulation ---" << endl;
 
     /* init the threads */
-    thread thSmoker1(tabaccoSmokerLogic);
-    thread thSmoker2(paperSmokerLogic);
-    thread thSmoker3(matchSmokerLogic);
-    thread thAgent(agentLogic);
+    thread thSpiderMan1(spiderWebLogic);
+    thread thSpiderMan2(suitLogic);
+    thread thSpiderMan3(spiderBotLogic);
+    thread thPeterParker(peterParkerLogic);
 
     // start the end processus of the programmn by waiting that the agent thread finish his execution
-    thAgent.join();
-    // detach these threads from the thread handle, they can now execute indenpendly, any resources used are freed after the threads end.
-    thSmoker1.detach();
-    thSmoker2.detach();
-    thSmoker3.detach();
+    thPeterParker.join();
+    // detach these threads from the thread handle, they can now execute indenpendly, any resources allocated are freed after the threads end.
+    thSpiderMan1.detach();
+    thSpiderMan2.detach();
+    thSpiderMan3.detach();
 
     cout << endl << "--- Fin de la simulation ---" << endl;
     return 0;
