@@ -1,0 +1,113 @@
+﻿Q.
+[Little book of semaphores.pdf]
+Écris moi un cours résumé du problème “cigarette smoker” en utilisant la version de pdf donné. N’utilise pas la version généralisée de ce problème.
+
+
+R.
+Contexte
+Il y a un agent et trois fumeurs. Chaque fumeur possède un type d'ingrédient (le fumeur A a du papier, le fumeur B a des filtres, le Fumeur C a des allumettes), mais il leur manque les autres ingrédients pour rouler une cigarette. L'agent possède les trois ingrédients manquants.
+
+
+Fonctionnement 
+L'agent place aléatoirement sur la table deux des trois ingrédients.
+Le fumeur qui possède les ingrédients complémentaires à ceux posés sur la table se réveille, récupère les ingrédients et fume sa cigarette.
+Une fois la cigarette terminée, le fumeur signale à l'agent qu'il est prêt pour une nouvelle fourniture.
+
+
+Technique
+Le problème illustre la difficulté de coordonner des processus basés sur des conditions multiples : le fumeur ne peut agir que si les ingrédients posés est précisément ceux dont il a besoin, et non celui qu'il possède déjà.
+
+
+Q.
+[main.cpp de la version safe]
+Peux tu m'écrire le pseudo code de ma version du problème “cigarette smoker”. Pour simplifier le processus, on écrit juste une seule version des pusher et des de la logique des spiderman.
+
+
+R.
+Variable Globale
+SÉMAPHORES :
+    peterParker = 1
+    spiderWeb = 0, suit = 0, spiderBot = 0
+    spiderWebGwen = 0, suitSpiderPunk = 0, spiderBotMilles = 0
+
+
+BOOLEENS :
+    is_SpiderWeb = faux, is_Suit = faux, is_SpiderBot = faux
+
+
+MUTEX :
+    pusher_mutex
+
+
+Procédure de PeterParker (l’agent)
+Procédure peterParkerLogic()
+    Pour i allant de 0 à 9 :
+        Attendre (peterParker)
+        randInt = nombre aléatoire entre 0 et 2
+        Si randInt == 0 :
+            Afficher "Peter Parker met à disposition des toiles et des spider-bots"
+            Signaler (spiderWeb)
+            Signaler (spiderBot)
+        Sinon Si randInt == 1 :
+            Afficher "Peter Parker met à disposition des spider-bots et des tenues"
+            Signaler (spiderBot)
+            Signaler (suit)
+        Sinon :
+            Afficher "Peter Parker met à disposition des toiles et des tenues"
+            Signaler (spiderWeb)
+            Signaler (suit)
+    Fin Pour
+Fin Procédure
+
+
+
+
+Procédure d’un des pushers (Il y en a une pour chaque éléments)
+Procédure spiderWeb_pusher()
+    Tant que (Vrai) :
+        Attendre (spiderWeb)
+        Verrouiller (pusher_mutex)
+        Si is_Suit est Vrai :
+            is_Suit = Faux
+            Signaler (spiderBotMilles)
+        Sinon Si is_SpiderBot est Vrai :
+            is_SpiderBot = Faux
+            Signaler (suitSpiderPunk)
+        Sinon :
+            is_SpiderWeb = Vrai
+        Déverrouiller (pusher_mutex)
+    Fin Tant que
+Fin Procédure
+
+
+Procédure d’un des spiderman en mission (il y en a autant que de spiderman (smokers))
+Procédure spiderWebLogic()
+    Tant que (Vrai) :
+        Attendre (spiderWebGwen)
+        Afficher "Spider-Gwen a ses toiles et récupère sa tenue et son spider-bot"
+        Afficher "Elle part en mission..."
+        Attendre (certain temps)
+        Signaler (peterParker)
+    Fin Tant que
+Fin Procédure
+
+
+Main
+Procédure Main()
+    Afficher "--- Début de la simulation ---"
+    
+    Lancer Thread thSpiderMan1(spiderWebLogic)
+    Lancer Thread thSpiderMan2(suitLogic)
+    Lancer Thread thSpiderMan3(spiderBotLogic)
+    Lancer Thread thPusher1(spiderWeb_pusher)
+    Lancer Thread thPusher2(suit_pusher)
+    Lancer Thread thPusher3(spiderBot_pusher)
+    Lancer Thread thPeterParker(peterParkerLogic)
+    
+    Attendre la fin du Thread thPeterParker (join)
+    
+    Afficher "--- Fin de la simulation ---"
+Fin Procédure
+
+
+(Les prompte et les réponses ne sont pas exactement celle demandé à l'ia mais c’est une recréation des réponse de l’ia puisque que le site d’ia n’est plus accesible)
