@@ -60,10 +60,6 @@ void peterParkerLogic() {
 }
 
 // Pusher Thread
-/* A pusher is a thread that is used to look at the semaphore and to know if they are used.
-* They are used to avoid a deadlock that appens when two thread use the same semaphore.
-*/
-
 /**
  * @brief Pusher logic for the spiderWeb resource.
  * Pusher logic for the spiderWeb resource. This pusher checks if his resources and another one are available.
