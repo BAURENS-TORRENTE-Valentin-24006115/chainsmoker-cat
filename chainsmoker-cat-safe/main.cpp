@@ -1,3 +1,6 @@
+/**
+ * @authors Baurens-Torrente Valentin
+ */
 #include <iostream>
 #include <thread>
 #include <semaphore>
