@@ -55,6 +55,7 @@ void peterParkerLogic() {
  * @brief Logic for one that need a suit and spider web (Gwen).
  * Function that represent the logic of the one that need a suit and spider web (Gwen). Gwen wait that the semaphores for
  * the resources are avaible and if they are, print that they are used and that she is going to a mission.
+ * @return void
  */
 void spiderWebLogic() {
     while (true) {
@@ -71,6 +72,7 @@ void spiderWebLogic() {
  * @brief Logic for the one that need spider web and spider bot (Spider-Punk).
  * Function that represent the logic of the one that need spider web and spider bot (Spider-Punk). Spider-Punk wait that the semaphores for
  * the resources are avaible and if they are, print that they are used and that he is going to a mission.
+ * @return void
  */
 void suitLogic() {
     while (true) {
@@ -88,6 +90,7 @@ void suitLogic() {
  * @brief Logic for the one that need spider web and a suit (Miller Moralles).
  * Function that represent the logic of the one that need spider web and a suit (Miller Morales). Milles Moralles wait that the semaphores for
  * the resources are avaible and if they are, print that they are used and that he is going to a mission.
+ * @return void
  */
 void spiderBotLogic() {
     while (true) {
