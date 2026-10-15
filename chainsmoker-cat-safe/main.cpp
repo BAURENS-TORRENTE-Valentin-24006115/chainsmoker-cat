@@ -10,129 +10,129 @@
 
 using namespace std;
 
-binary_semaphore agentSem{ 1 };
-binary_semaphore tabacco{ 0 };
-binary_semaphore paper{ 0 };
-binary_semaphore match{ 0 };
+binary_semaphore peterParker{ 1 };
+binary_semaphore spiderWeb { 0 };
+binary_semaphore suit{ 0 };
+binary_semaphore spiderBot{ 0 };
 
-binary_semaphore tabaccoSmokerSem{ 0 }; // Missing paper and matches
-binary_semaphore paperSmokerSem{ 0 }; // Missing tabacco and matches
-binary_semaphore matchSmokerSem{ 0 }; // Missing paper and tabacco
+binary_semaphore spiderWebGwen{ 0 }; // Missing suit and spiderBots
+binary_semaphore suitSpiderPunk{ 0 }; // Missing spiderWeb and spiderBots
+binary_semaphore spiderBotMilles{ 0 }; // Missing suit and spiderWeb
 
-bool is_tabacco = false;
-bool is_paper = false;
-bool is_match = false;
+bool is_spiderWeb = false;
+bool is_Suit = false;
+bool is_SpiderBot = false;
 mutex pusher_mutex;
 
-// Agent Thread
+// Peter Parker Thread
 
-void agentLogic() {
+void peterParkerLogic() {
     int randInt;
     for (int i = 0; i < 10; ++i) {
-        agentSem.acquire();
+        peterParker.acquire();
 
         randInt = rand() % 3;
 
         if (randInt == 0) {
-            cout << "L'agent mets du tabac et des alumettes sur la table" << endl;
-            tabacco.release();
-            match.release();
+            cout << "Peter Parker prépare des toilles et des spider bots" << endl;
+            spiderWeb.release();
+            spiderBot.release();
         }
         else if (randInt == 1) {
-            cout << "L'agent mets du papier et des alumettes sur la table" << endl;
-            match.release();
-            paper.release();
+            cout << "Peter Parker prépare des spider bots et une tenue" << endl;
+            spiderBot.release();
+            suit.release();
         }
         else if (randInt == 2) {
-            cout << "L'agent mets du tabac et du papier sur la table" << endl;
-            tabacco.release();
-            paper.release();
+            cout << "Peter Parker prépare des toilles et une tenue" << endl;
+            spiderWeb.release();
+            suit.release();
         }
     }
 }
 
 // Pusher Thread
 
-void tabacco_pusher() {
+void spiderWeb_pusher() {
     while (true) {
-        tabacco.acquire();
+        spiderWeb.acquire();
 
         lock_guard<mutex> lock(pusher_mutex);
-        if (is_paper) {
-            is_paper = false;
-            matchSmokerSem.release(); // We have tabacco and paper, so we call the smoker with match
+        if (is_Suit) {
+            is_Suit = false;
+            spiderBotMilles.release(); // We have spiderWeb and suit, so we call the smoker with spiderBot
         }
-        else if (is_match) {
-            is_match = false;
-            paperSmokerSem.release(); // We have tabacco and match, so we call the smoker with paper
+        else if (is_SpiderBot) {
+            is_SpiderBot = false;
+            suitSpiderPunk.release(); // We have spiderWeb and spiderBot, so we call the smoker with suit
         }
         else {
-            is_tabacco = true;
+            is_spiderWeb = true;
         }
     }
 }
 
-void paper_pusher() {
+void suit_pusher() {
     while (true) {
-        paper.acquire();
+        suit.acquire();
 
         lock_guard<mutex> lock(pusher_mutex);
-        if (is_tabacco) {
-            is_tabacco = false;
-            matchSmokerSem.release(); // We have tabacco and paper, so we call the smoker with match
+        if (is_spiderWeb) {
+            is_spiderWeb = false;
+            spiderBotMilles.release(); // We have spiderWeb and suit, so we call the smoker with spiderBot
         }
-        else if (is_match) {
-            is_match = false;
-            tabaccoSmokerSem.release(); // We have paper and match, so we call the smoker with tabacco
+        else if (is_SpiderBot) {
+            is_SpiderBot = false;
+            spiderWebGwen.release(); // We have suit and spiderBot, so we call the smoker with spiderWeb
         }
         else {
-            is_paper = true;
+            is_Suit = true;
         }
     }
 }
 
-void match_pusher() {
+void spiderBot_pusher() {
     while (true) {
-        match.acquire();
+        spiderBot.acquire();
 
         lock_guard<mutex> lock(pusher_mutex);
-        if (is_paper) {
-            is_paper = false;
-            tabaccoSmokerSem.release(); // We have match and paper, so we call the smoker with tabacco
+        if (is_Suit) {
+            is_Suit = false;
+            spiderWebGwen.release(); // We have spiderBot and suit, so we call the smoker with spiderWeb
         }
-        else if (is_tabacco) {
-            is_tabacco = false;
-            paperSmokerSem.release(); // We have tabacco and match, so we call the smoker with paper
+        else if (is_spiderWeb) {
+            is_spiderWeb = false;
+            suitSpiderPunk.release(); // We have spiderWeb and spiderBot, so we call the smoker with suit
         }
         else {
-            is_match = true;
+            is_SpiderBot = true;
         }
     }
 }
 
 // Smoker Thread
 
-void tabaccoSmokerLogic() {
+void spiderWebLogic() {
     while (true) {
-        tabaccoSmokerSem.acquire();
-        cout << "Le fumeur qui a le tabac prend les alumettes et le papier" << endl;
-        cout << "Il fume";
+        spiderWebGwen.acquire();
+        cout << "Spider-Gwen a ses toilles récupère sa tenue et sont spider bot" << endl;
+        cout << "Il part en mission";
         for (int i = 0; i < 3; ++i)
         {
             cout << ".";
             this_thread::sleep_for(chrono::milliseconds(750));
         }
         cout << endl;
-        agentSem.release();
+        peterParker.release();
     }
 }
 
-void paperSmokerLogic() {
+void suitLogic() {
     while (true) {
-        paperSmokerSem.acquire();
+        suitSpiderPunk.acquire();
 
-        cout << "Le fumeur qui a le papier prend les alumettes et le tabac" << endl;
-        cout << "Il fume";
+        cout << "Spider-Punk qui a sa tenue récupère ses toilles et son spider bot" << endl;
+        cout << "Il part en mission";
         for (int i = 0; i < 3; ++i)
         {
             cout << ".";
@@ -140,16 +140,16 @@ void paperSmokerLogic() {
         }
         cout << endl;
 
-        agentSem.release();
+        peterParker.release();
     }
 }
 
-void matchSmokerLogic() {
+void spiderBotLogic() {
     while (true) {
-        matchSmokerSem.acquire();
+        spiderBotMilles.acquire();
 
-        cout << "Le fumeur qui a les allumettes prend le tabac et le papier" << endl;
-        cout << "Il fume";
+        cout << "Milles Moralles qui a son spider bot récupère ses toilles et sa tenue" << endl;
+        cout << "Il part en mission";
         for (int i = 0; i < 3; ++i)
         {
             cout << ".";
@@ -157,7 +157,7 @@ void matchSmokerLogic() {
         }
         cout << endl;
 
-        agentSem.release();
+        peterParker.release();
     }
 }
 
@@ -165,21 +165,21 @@ int main() {
     cout << "--- Debut de la simulation ---" << endl;
 
     /* Thread */
-    thread thSmoker1(tabaccoSmokerLogic);
-    thread thSmoker2(paperSmokerLogic);
-    thread thSmoker3(matchSmokerLogic);
+    thread thSpiderMan1(spiderWebLogic);
+    thread thSpiderMan2(suitLogic);
+    thread thSpiderMan3(spiderBotLogic);
 
-    thread thPusher1(tabacco_pusher);
-    thread thPusher2(paper_pusher);
-    thread thPusher3(match_pusher);
+    thread thPusher1(spiderWeb_pusher);
+    thread thPusher2(suit_pusher);
+    thread thPusher3(spiderBot_pusher);
 
-    thread thAgent(agentLogic);
+    thread thPeterParker(peterParkerLogic);
 
-    thAgent.join();
+    thPeterParker.join();
 
-    thSmoker1.detach();
-    thSmoker2.detach();
-    thSmoker3.detach();
+    thSpiderMan1.detach();
+    thSpiderMan2.detach();
+    thSpiderMan3.detach();
 
     thPusher1.detach();
     thPusher2.detach();
