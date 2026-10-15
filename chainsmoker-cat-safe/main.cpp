@@ -116,7 +116,7 @@ void spiderBot_pusher() {
 void spiderWebLogic() {
     while (true) {
         spiderWebGwen.acquire();
-        cout << "Spider-Gwen a ses toiles et récupère sa tenue et son spider-bot" << endl;
+        cout << "Spider-Gwen a ses toiles et recupere sa tenue et son spider-bot" << endl;
         cout << "Elle part en mission.";
         for (int i = 0; i < 3; ++i)
         {
@@ -132,7 +132,7 @@ void suitLogic() {
     while (true) {
         suitSpiderPunk.acquire();
 
-        cout << "Spider-Punk a sa tenue et récupère ses toiles et son spider-bot" << endl;
+        cout << "Spider-Punk a sa tenue et recupere ses toiles et son spider-bot" << endl;
         cout << "Il part en mission";
         for (int i = 0; i < 3; ++i)
         {
@@ -149,7 +149,7 @@ void spiderBotLogic() {
     while (true) {
         spiderBotMilles.acquire();
 
-        cout << "Milles Moralles a son spider-bot et récupère ses toiles et sa tenue" << endl;
+        cout << "Milles Moralles a son spider-bot et recupere ses toiles et sa tenue    " << endl;
         cout << "Il part en mission";
         for (int i = 0; i < 3; ++i)
         {
