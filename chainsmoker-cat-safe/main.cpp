@@ -35,17 +35,17 @@ void peterParkerLogic() {
         randInt = rand() % 3;
 
         if (randInt == 0) {
-            cout << "Peter Parker prépare des toilles et des spider bots" << endl;
+            cout << "Peter Parker met a disposition des toilles et des spider bots" << endl;
             spiderWeb.release();
             spiderBot.release();
         }
         else if (randInt == 1) {
-            cout << "Peter Parker prépare des spider bots et une tenue" << endl;
+            cout << "Peter Parker met a disposition des spider bots et une tenue" << endl;
             spiderBot.release();
             suit.release();
         }
         else if (randInt == 2) {
-            cout << "Peter Parker prépare des toilles et une tenue" << endl;
+            cout << "Peter Parker met a disposition des toilles et une tenue" << endl;
             spiderWeb.release();
             suit.release();
         }
@@ -116,7 +116,7 @@ void spiderBot_pusher() {
 void spiderWebLogic() {
     while (true) {
         spiderWebGwen.acquire();
-        cout << "Spider-Gwen a ses toilles récupère sa tenue et sont spider bot" << endl;
+        cout << "Spider-Gwen a ses toilles et recupere sa tenue et sont spider bot" << endl;
         cout << "Il part en mission";
         for (int i = 0; i < 3; ++i)
         {
@@ -132,7 +132,7 @@ void suitLogic() {
     while (true) {
         suitSpiderPunk.acquire();
 
-        cout << "Spider-Punk qui a sa tenue récupère ses toilles et son spider bot" << endl;
+        cout << "Spider-Punk qui a sa tenue et recupere ses toilles et son spider bot" << endl;
         cout << "Il part en mission";
         for (int i = 0; i < 3; ++i)
         {
@@ -149,7 +149,7 @@ void spiderBotLogic() {
     while (true) {
         spiderBotMilles.acquire();
 
-        cout << "Milles Moralles qui a son spider bot récupère ses toilles et sa tenue" << endl;
+        cout << "Milles Moralles qui a son spider bot et recupere ses toilles et sa tenue" << endl;
         cout << "Il part en mission";
         for (int i = 0; i < 3; ++i)
         {
